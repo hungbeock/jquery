@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <link  rel="stylesheet" href="j.css">
+</head>
+<body>
+<head>
+<h1> My News</h1>  
+ <div class="nenmo"></div>
+<i id="search" class="fa-solid fa-magnifying-glass motimkiem"></i>
+
+   
+</head>
+<div class="hop-thoai">
+    <label id="timkiem" for="tim" >
+        <input id="tukhoa" type="text" placeholder="Nhập từ khoá"> <br>
+        <button id="tim" >Tìm</button>
+       
+    </label><br>
+
+    <button id="dong" class="nutdong"> Đóng</button>
+</div>
+
+
+
+   
+<div id="demo"></div><br>
+<div id="dulieu"></div>
+    <script>
+     $(document).ready(function() {
+
+        fetch('https://gnews.io/api/v4/top-headlines?&token=052c145f944e1fe5863b60da433a9889')
+            .then(function(response) {
+                return response.json();
+            
+            })
+            .then(function(data) {
+                console.log(data);
+            var thongtin=data.articles;
+            var linh=thongtin.url
+            for(var i=0;i<data.articles.length;i++) {
+                let title = data.articles[i].title
+                let description = data.articles[i].description
+                let content = data.articles[i].content
+                let url = data.articles[i].url
+                let image = data.articles[i].image
+                let published = data.articles[i].publishedAt
+                var a=' <h3>' +'<a href="'+url+'"> ' + title+ '</a>'  +'</h3>' + '<img src="'+ image+'" > ' +'<a href="'+url+'"> ' +"viewmore" + '</a>'  +'<p>'+content+'</p>'+'<p>'+description +'</p>'+'<p>'+published+'</p>'
+                $(demo).append(a)
+            }
+
+                })
+        
+        $('#search').click(function(){
+            $('.hop-thoai').addClass('hienra')
+            $('.nenmo').addClass('hienra')
+            
+        })
+        $('.nutdong').click(function(){
+            $('.hop-thoai').removeClass('hienra')
+            $('.nenmo').removeClass('hienra')
+        })
+     
+
+
+
+        $('#tim').click(function() {
+            $('.hop-thoai').removeClass('hienra')
+            $('.nenmo').removeClass('hienra')
+            
+            $('#demo').hide()
+            var tukhoa=$('#tukhoa').val();
+            console.log(tukhoa)
+            var key='https://gnews.io/api/v4/search?q='+ tukhoa+'&token=052c145f944e1fe5863b60da433a9889'
+            fetch(key)
+            .then(function(response) {
+                return response.json();
+            
+            })
+            .then(function(data) {
+                console.log(data);
+            var thongtin=data.articles;
+            var linh=thongtin.url
+            for(var i=0;i<data.articles.length;i++) {
+                let title = data.articles[i].title
+                let description = data.articles[i].description
+                let content = data.articles[i].content
+                let url = data.articles[i].url
+                let image = data.articles[i].image
+                let published = data.articles[i].publishedAt
+                var b=' <h3>' +'<a href="'+url+'"> ' + title+ '</a>'  +'</h3>'  + '<img src="'+ image+'" > ' +'<a href="'+url+'"> ' +"viewmore" + '</a>'  +'<p>'+content+'</p>'+'<p>'+description +'</p>'+'<p>'+published+'</p>'
+                $(dulieu).append(b)
+                
+                console.log(b)
+            }
+
+                })
+        })
+
+     })  
+        
+//https://jsonplaceholder.typicode.com/posts
+//https://gnews.io/api/v4/top-headlines?&token=052c145f944e1fe5863b60da433a9889
+//https://gnews.io/api/v4/search?q=example&token=052c145f944e1fe5863b60da433a9889
+
+
+
+    </script>
+</body>
+
+</html>
